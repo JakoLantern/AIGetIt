@@ -1,8 +1,30 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import BaseButton from '../components/Common/BaseButton.vue'
+import BaseCard from '../components/Common/BaseCard.vue'
 
 const router = useRouter()
+
+const featureCards = [
+  {
+    testid: 'feature-card-flashcards',
+    index: '01',
+    title: 'Creating flashcards',
+    copy: 'Build review-ready flashcards from your notes in a few clicks.',
+  },
+  {
+    testid: 'feature-card-results',
+    index: '02',
+    title: 'Test results analysis',
+    copy: 'Spot strengths, gaps, and patterns in your results without manual number crunching.',
+  },
+  {
+    testid: 'feature-card-learning',
+    index: '03',
+    title: 'AI assisted learning',
+    copy: 'Get guided explanations and study support when you need a smarter way forward.',
+  },
+]
 
 function handleHeroCta() {
   router.push('/login')
@@ -16,22 +38,17 @@ function handleHeroCta() {
         <div class="landing-page__hero-copy">
           <p class="landing-page__eyebrow">AI-powered learning support</p>
 
-          <div class="landing-page__landing-content">
-            <div class="landing-page__content-text">
-              <h1 id="landing-page-title" class="landing-page__title">AI Get It</h1>
+          <h1 id="landing-page-title" class="landing-page__title">AI Get It</h1>
 
-              <p class="landing-page__subtitle">
-                Turn study material into flashcards, understand performance with test results
-                analysis, and learn faster with guided AI support.
-              </p>
-            </div>
+          <p class="landing-page__subtitle">
+            Turn study material into flashcards, understand performance with test results analysis,
+            and learn faster with guided AI support.
+          </p>
 
-            <div class="max-w-[300px]">
-                <BaseButton variant="mossy" data-testid="hero-cta" @click="handleHeroCta">
+          <div class="landing-page__cta-wrap">
+            <BaseButton variant="mossy" data-testid="hero-cta" @click="handleHeroCta">
               Sign in to start
             </BaseButton>
-            </div>
-            
           </div>
         </div>
       </div>
@@ -44,53 +61,45 @@ function handleHeroCta() {
         <h2 id="features-heading" class="landing-page__section-title">Core Features</h2>
 
         <div class="features-grid">
-          <article class="features-grid__item" data-testid="feature-card">
-            <p class="features-grid__index">01</p>
-            <h3 class="features-grid__title">Creating flashcards</h3>
+          <BaseCard
+            v-for="feature in featureCards"
+            :key="feature.testid"
+            variant="glassy"
+            rounded="lg"
+            :data-testid="feature.testid"
+            class="features-grid__item landing-page__feature-card p-6 shadow-sm"
+          >
+            <p class="features-grid__index">{{ feature.index }}</p>
+            <h3 class="features-grid__title">{{ feature.title }}</h3>
             <p class="features-grid__copy">
-              Build review-ready flashcards from your notes in a few clicks.
+              {{ feature.copy }}
             </p>
-          </article>
-
-          <article class="features-grid__item" data-testid="feature-card">
-            <p class="features-grid__index">02</p>
-            <h3 class="features-grid__title">Test results analysis</h3>
-            <p class="features-grid__copy">
-              Spot strengths, gaps, and patterns in your results without manual number crunching.
-            </p>
-          </article>
-
-          <article class="features-grid__item" data-testid="feature-card">
-            <p class="features-grid__index">03</p>
-            <h3 class="features-grid__title">AI assisted learning</h3>
-            <p class="features-grid__copy">
-              Get guided explanations and study support when you need a smarter way forward.
-            </p>
-          </article>
+          </BaseCard>
         </div>
       </div>
     </section>
 
     <section class="landing-page__message" aria-labelledby="message-heading">
-      <div class="landing-page__section-shell landing-page__message-shell">
-        <h2
-          id="message-heading"
-          class="landing-page__section-title landing-page__section-title--dark"
+      <div class="landing-page__section-shell">
+        <BaseCard
+          variant="glassy"
+          rounded="lg"
+          class="landing-page__message-card"
+          data-testid="footer-message-card"
         >
-          Message
-        </h2>
+          <template #header>
+            <h2
+              id="message-heading"
+              class="landing-page__section-title landing-page__section-title--dark"
+            >
+              A message from the developer
+            </h2>
+          </template>
 
-        <div
-          class="landing-page__editable"
-          contenteditable="true"
-          data-testid="footer-message"
-          role="textbox"
-          aria-multiline="true"
-          aria-label="Editable message placeholder"
-          spellcheck="false"
-        >
-          Editable text placeholder for announcements or welcome notes.
-        </div>
+          <p class="landing-page__message-copy" data-testid="footer-message">
+            To the one whom I made this project for, goodluck. I hope this helps you review.
+          </p>
+        </BaseCard>
       </div>
     </section>
   </main>
@@ -104,15 +113,11 @@ function handleHeroCta() {
 }
 
 .landing-page__hero {
-  @apply relative flex h-screen flex-col overflow-hidden;
+  @apply relative flex min-h-screen flex-col overflow-hidden;
 }
 
 .landing-page__hero-content {
   @apply relative z-10 flex flex-1 items-center px-6;
-}
-
-.landing-page__landing-content{
-    @apply flex flex-col gap-10;
 }
 
 .landing-page__hero-copy {
@@ -131,6 +136,10 @@ function handleHeroCta() {
   @apply mt-6 max-w-3xl text-lg leading-snug text-primary-200 sm:text-xl;
 }
 
+.landing-page__cta-wrap {
+  @apply mt-8 max-w-[300px];
+}
+
 .landing-page__cta {
   @apply mt-8 inline-flex items-center justify-center rounded-full bg-mossy-main px-6 py-3 text-base font-semibold text-primary transition hover:bg-mossy-400;
 }
@@ -141,7 +150,7 @@ function handleHeroCta() {
 }
 
 .landing-page__features {
-  @apply bg-mossy-dark px-6 py-16;
+  @apply min-h-screen bg-mossy-dark px-6 py-16;
 }
 
 .landing-page__section-shell {
@@ -160,8 +169,8 @@ function handleHeroCta() {
   @apply mt-8 grid gap-6 md:grid-cols-3;
 }
 
-.features-grid__item {
-  @apply rounded-3xl border border-primary-50 bg-primary/20 p-6 shadow-sm text-mossy-pale;
+.landing-page__feature-card {
+  @apply text-primary;
 }
 
 .features-grid__index {
@@ -177,19 +186,15 @@ function handleHeroCta() {
 }
 
 .landing-page__message {
-  @apply bg-white px-6 py-16;
+  @apply min-h-screen bg-white px-6 py-16;
 }
 
-.landing-page__message-shell {
-  @apply rounded-3xl border border-primary-50 bg-mossy-30 p-8 shadow-sm;
+.landing-page__message-card {
+  @apply w-full;
 }
 
-.landing-page__editable {
-  @apply mt-4 min-h-32 rounded-2xl border border-primary-50 bg-white p-4 text-base leading-relaxed text-primary outline-none transition;
-}
-
-.landing-page__editable:focus-visible {
-  @apply border-mossy-main ring-2 ring-mossy-pale/40;
+.landing-page__message-copy {
+  @apply m-0 mt-4 text-lg leading-relaxed text-primary;
 }
 
 @media (min-width: 768px) {
@@ -206,5 +211,19 @@ function handleHeroCta() {
   .landing-page__message {
     @apply px-12;
   }
+}
+
+.landing-page__features,
+.landing-page__message {
+  @apply flex items-center;
+}
+
+.landing-page__section-shell {
+  @apply w-full;
+}
+
+.landing-page__features .landing-page__section-shell,
+.landing-page__message .landing-page__section-shell {
+  @apply flex flex-col justify-center;
 }
 </style>
