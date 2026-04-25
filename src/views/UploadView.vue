@@ -1,121 +1,155 @@
 <script setup lang="ts">
 import BaseButton from '../components/Common/BaseButton.vue'
-
-function handleUploadClick() {
-  // Placeholder for the upload flow.
-}
+import BaseIcon from '../components/Common/BaseIcon.vue'
 </script>
 
 <template>
-  <section class="upload-page">
-    <div class="upload-page__hero">
-      <p class="upload-page__badge">Private upload area</p>
-      <h1 class="upload-page__title">Upload your study material</h1>
-      <p class="upload-page__subtitle">
-        Bring in notes, PDFs, or screenshots and get them ready for flashcards, review, and analysis.
-      </p>
-    </div>
+  <section class="upload-view">
+    <div class="upload-view__shell">
+      <header class="upload-hero">
+        <div class="upload-hero__lottie" aria-hidden="true" />
 
-    <section class="upload-page__panel" aria-label="Upload panel">
-      <div class="upload-page__dropzone">
-        <p class="upload-page__dropzone-label">Drop files here</p>
-        <p class="upload-page__dropzone-copy">
-          Supported formats: PDF, PNG, JPG, and plain text notes.
-        </p>
+        <div class="upload-hero__copy">
+          <h1 class="upload-hero__title">What shall we study today?</h1>
+          <p class="upload-hero__subtitle">Upload or type anything you wish to study</p>
+        </div>
+      </header>
 
-        <BaseButton variant="glassy" type="button" data-testid="upload-button" @click="handleUploadClick">
-          Choose files
-        </BaseButton>
+      <div class="upload-view__composer-wrap">
+        <div class="upload-input-group" role="group" aria-label="Study input composer">
+          <button class="upload-input-group__add" type="button" aria-label="Add files">
+            <BaseIcon name="plus" :size="20" class="upload-input-group__icon" />
+          </button>
+
+          <label class="upload-input-group__field">
+            <span class="sr-only">Study topic or notes</span>
+            <input
+              class="upload-input-group__input"
+              type="text"
+              placeholder="Topic, textbook chapter, or paste notes..."
+            />
+          </label>
+
+          <BaseButton
+            class="upload-input-group__submit"
+            variant="mossy"
+            type="button"
+            data-testid="upload-submit-button"
+          >
+            <BaseIcon name="arrow-up" :size="18" class="upload-input-group__submit-icon" />
+            <span>Send</span>
+          </BaseButton>
+        </div>
       </div>
-
-      <article class="upload-page__card">
-        <p class="upload-page__card-label">What happens next</p>
-        <ul class="upload-page__steps">
-          <li>Files are prepared for flashcard generation.</li>
-          <li>Key topics are extracted for review sessions.</li>
-          <li>Results can be reused across lessons and quizzes.</li>
-        </ul>
-      </article>
-    </section>
+    </div>
   </section>
 </template>
 
 <style scoped>
 @reference "../assets/main.css";
 
-.upload-page {
-  @apply flex min-h-screen flex-col gap-10 px-6 py-10 text-white;
+.upload-view {
+  @apply flex min-h-screen items-center justify-center px-4 pb-28 pt-10 sm:px-6 lg:px-8 lg:pb-16;
   background:
-    radial-gradient(circle at top left, rgba(34, 197, 94, 0.2), transparent 42%),
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 30%),
-    linear-gradient(180deg, var(--color-mossy-dark) 0%, #08110b 100%);
+    radial-gradient(circle at top, rgba(186, 192, 149, 0.16), transparent 38%),
+    radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.04), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, rgba(247, 249, 244, 0.9) 100%);
 }
 
-.upload-page__hero {
-  @apply max-w-4xl;
+.upload-view__shell {
+  @apply grid w-full max-w-6xl gap-12 lg:grid-cols-12 lg:items-center;
 }
 
-.upload-page__badge {
-  @apply mb-4 inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium leading-none;
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.08);
+.upload-hero {
+  @apply flex flex-col items-center gap-6 text-center lg:col-span-12;
 }
 
-.upload-page__title {
-  @apply m-0 font-semibold tracking-tight;
-  font-size: clamp(2rem, 4vw, 3rem);
+.upload-hero__lottie {
+  @apply h-32 w-32 rounded-full bg-mossy-pale/20 shadow-sm animate-pulse;
 }
 
-.upload-page__subtitle {
-  @apply mt-4 max-w-2xl text-sm leading-6 sm:text-base;
-  color: rgba(255, 255, 255, 0.8);
+.upload-hero__copy {
+  @apply flex flex-col items-center gap-3;
 }
 
-.upload-page__panel {
-  @apply grid gap-6 lg:grid-cols-[1.2fr_0.8fr];
+.upload-hero__title {
+  @apply m-0 text-4xl font-bold tracking-tight text-primary;
 }
 
-.upload-page__dropzone,
-.upload-page__card {
-  @apply rounded-3xl border p-8 shadow-2xl backdrop-blur;
-  border-color: rgba(255, 255, 255, 0.24);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px) saturate(180%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.38),
-    0 8px 30px rgba(0, 0, 0, 0.14);
+.upload-hero__subtitle {
+  @apply m-0 max-w-2xl text-lg leading-snug text-mossy-pale;
 }
 
-.upload-page__dropzone {
-  @apply flex flex-col items-start justify-between gap-6;
-  min-height: 320px;
+.upload-view__composer-wrap {
+  @apply w-full lg:col-start-3 lg:col-span-8;
 }
 
-.upload-page__dropzone-label,
-.upload-page__card-label {
-  @apply m-0 text-xs font-semibold uppercase tracking-[0.2em];
-  color: #f8fafc;
+.upload-input-group {
+  @apply flex w-full items-stretch gap-3 rounded-3xl border border-primary-50 bg-primary/5 p-3 transition;
 }
 
-.upload-page__dropzone-copy {
-  @apply m-0 max-w-xl text-sm leading-6;
-  color: rgba(255, 255, 255, 0.82);
+.upload-input-group:focus-within {
+  border-color: var(--color-mossy-main);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-mossy-main) 16%, transparent);
 }
 
-.upload-page__steps {
-  @apply m-0 grid gap-4 pl-5 text-sm leading-6;
-  color: rgba(255, 255, 255, 0.82);
+.upload-input-group__add {
+  @apply inline-flex h-14 w-14 flex-none items-center justify-center rounded-2xl border border-primary-50 bg-white text-primary transition;
 }
 
-@media (min-width: 768px) {
-  .upload-page {
-    @apply px-10 py-12;
+.upload-input-group__add:hover {
+  @apply border-mossy-main text-mossy-main;
+}
+
+.upload-input-group__add:focus-visible {
+  @apply outline-none ring-2 ring-mossy-pale/40;
+}
+
+.upload-input-group__icon,
+.upload-input-group__submit-icon {
+  @apply shrink-0;
+}
+
+.upload-input-group__field {
+  @apply flex min-w-0 flex-1 items-center;
+}
+
+.upload-input-group__input {
+  @apply min-w-0 w-full border-0 bg-transparent px-2 text-base leading-6 text-primary placeholder:text-primary-300 focus:outline-none;
+}
+
+.upload-input-group__input::placeholder {
+  color: var(--color-primary-300);
+}
+
+.upload-input-group__submit {
+  @apply h-14 gap-2 px-6 text-base shadow-sm;
+}
+
+@media (max-width: 639px) {
+  .upload-input-group {
+    @apply flex-col;
+  }
+
+  .upload-input-group__add,
+  .upload-input-group__submit {
+    @apply w-full;
+  }
+
+  .upload-input-group__field {
+    @apply min-h-14 rounded-2xl bg-white px-4;
+  }
+}
+
+@media (min-width: 640px) {
+  .upload-input-group__field {
+    @apply px-1;
   }
 }
 
 @media (min-width: 1024px) {
-  .upload-page {
-    @apply px-12 py-14;
+  .upload-view {
+    @apply px-12;
   }
 }
 </style>

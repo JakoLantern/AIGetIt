@@ -87,7 +87,11 @@ async function handleLogin() {
 @reference "../assets/main.css";
 
 .login-page {
-  @apply flex min-h-[calc(100vh-7rem)] items-center justify-center px-4;
+  @apply flex min-h-[calc(100vh-7rem)] items-center justify-center px-4 py-10 sm:px-6 lg:px-8;
+  background:
+    radial-gradient(circle at top, rgba(186, 192, 149, 0.16), transparent 38%),
+    radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.04), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, rgba(247, 249, 244, 0.9) 100%);
 }
 
 .login-page__text {
@@ -95,15 +99,18 @@ async function handleLogin() {
 }
 
 .login-page__card {
-  @apply w-full max-w-2xl rounded-3xl border border-primary-30 bg-white p-8 shadow-lg backdrop-blur;
+  @apply w-full max-w-2xl rounded-3xl border border-primary-50 bg-primary/5 p-8 shadow-lg backdrop-blur-md;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 12px 36px rgba(15, 23, 42, 0.08);
 }
 
 .login-page__title {
-  @apply m-0 text-3xl font-semibold tracking-tight text-slate-900;
+  @apply m-0 text-3xl font-bold tracking-tight text-primary;
 }
 
 .login-page__subtitle {
-  @apply mt-4 text-sm text-secondary-main leading-6;
+  @apply mt-4 text-sm leading-6 text-mossy-pale;
 }
 
 .login-page__form {
@@ -115,15 +122,16 @@ async function handleLogin() {
 }
 
 .login-page__label {
-  @apply text-sm font-medium text-slate-700;
+  @apply text-sm font-medium text-primary;
 }
 
 .login-page__input {
-  @apply w-full rounded-2xl border bg-white px-4 py-3 text-slate-900 outline-none transition;
+  @apply w-full rounded-2xl border border-primary-50 bg-primary/5 px-4 py-3 text-primary outline-none transition placeholder:text-primary-300;
 }
 
 .login-page__input:focus-visible {
-  @apply border-mossy-main;
+  border-color: var(--color-mossy-main);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-mossy-main) 16%, transparent);
 }
 
 .login-page__error {
