@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+@import './base.css';
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #020617;
+}
+
+#app {
+  min-height: 100vh;
+}
