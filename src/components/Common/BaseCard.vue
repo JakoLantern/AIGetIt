@@ -94,9 +94,6 @@ const cardStyle = computed(() => {
   --base-card-background: var(--color-white);
   --base-card-border: var(--color-primary-50);
   --base-card-text: var(--color-primary);
-  --base-card-background-hover: var(--color-mossy-main);
-  --base-card-border-hover: var(--color-mossy-main);
-  --base-card-text-hover: var(--color-white);
   @apply border bg-white shadow-md;
   background-color: var(--base-card-background);
   border-color: var(--base-card-border);
@@ -104,19 +101,10 @@ const cardStyle = computed(() => {
   transition-property: background-color, border-color, color, box-shadow, transform;
 }
 
-.base-card:hover {
-  background-color: var(--base-card-background-hover);
-  border-color: var(--base-card-border-hover);
-  color: var(--base-card-text-hover);
-}
-
 .base-card--glassy {
   --base-card-background: rgba(255, 255, 255, 0.1);
   --base-card-border: rgba(255, 255, 255, 0.25);
   --base-card-text: var(--color-primary);
-  --base-card-background-hover: rgba(255, 255, 255, 0.18);
-  --base-card-border-hover: rgba(255, 255, 255, 0.4);
-  --base-card-text-hover: var(--color-primary);
   border-width: 1px;
   background-color: var(--base-card-background);
   border-color: var(--base-card-border);
