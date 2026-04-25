@@ -5,6 +5,9 @@ import { useRouter } from 'vue-router'
 import BaseButton from '../components/Common/BaseButton.vue'
 import BaseCard from '../components/Common/BaseCard.vue'
 import BaseProgressBar from '../components/Common/BaseProgressBar.vue'
+import SchedulingCalendar, {
+  type CalendarEvent,
+} from '../components/Calendar/SchedulingCalendar.vue'
 import { useAuthStore } from '../stores/auth'
 
 type TopicCard = {
@@ -119,6 +122,27 @@ const deadlines: Deadline[] = [
   },
 ]
 
+const scheduleEvents: CalendarEvent[] = [
+  {
+    start: '2026-04-29 09:00',
+    end: '2026-04-29 10:00',
+    title: 'Biology review',
+    content: 'Revisit cell structure and membrane transport.',
+  },
+  {
+    start: '2026-04-30 15:30',
+    end: '2026-04-30 16:15',
+    title: 'Quiz practice',
+    content: 'Run through quick recall questions.',
+  },
+  {
+    start: '2026-05-02 18:00',
+    end: '2026-05-02 18:45',
+    title: 'Deadline check-in',
+    content: 'Prepare uploads and finish review notes.',
+  },
+]
+
 const proficiencyStats: ProficiencyStat[] = [
   {
     label: 'Accuracy',
@@ -229,7 +253,7 @@ function goToQuizzes() {
               </div>
 
               <BaseButton
-                variant="glassy"
+                variant="bordered"
                 type="button"
                 data-testid="dashboard-upload-button"
                 @click="goToUpload"
@@ -375,6 +399,12 @@ function goToQuizzes() {
               </p>
             </BaseCard>
 
+            <SchedulingCalendar
+              :events="scheduleEvents"
+              class="dashboard__rail-calendar"
+              data-testid="dashboard-calendar"
+            />
+
             <BaseCard
               rounded="lg"
               data-testid="dashboard-deadlines"
@@ -451,11 +481,11 @@ function goToQuizzes() {
 }
 
 .dashboard__container {
-  @apply mx-auto grid max-w-7xl grid-cols-12 gap-8 px-6 py-8;
+  @apply mx-auto max-w-[100rem] px-6 py-8 md:px-8 md:py-8 lg:px-12 lg:py-12;
 }
 
 .dashboard__hero {
-  @apply col-span-12 flex max-w-4xl flex-col gap-4;
+  @apply flex max-w-6xl flex-col gap-4;
 }
 
 .dashboard__eyebrow {
@@ -465,7 +495,7 @@ function goToQuizzes() {
 }
 
 .dashboard__title {
-  @apply m-0 text-4xl font-semibold tracking-tight text-primary sm:text-5xl;
+  @apply m-0 text-3xl font-semibold tracking-tight text-primary lg:text-5xl;
 }
 
 .dashboard__subtitle {
@@ -473,21 +503,23 @@ function goToQuizzes() {
 }
 
 .dashboard__grid {
-  @apply col-span-12 grid items-start gap-8 lg:grid-cols-12;
+  @apply flex flex-col gap-8 md:gap-6 lg:grid lg:grid-cols-12 lg:gap-6;
 }
 
 .dashboard__main {
-  @apply col-span-12 flex flex-col gap-8 lg:col-span-8;
+  @apply order-1 flex flex-col gap-8 lg:order-none lg:col-span-8;
 }
 
 .dashboard__right-rail {
-  @apply col-span-12 h-fit lg:col-span-4;
-  position: sticky;
-  top: calc(var(--navbar-height, 64px) + var(--navbar-offset, 16px) + 1.5rem);
+  @apply order-2 flex flex-col gap-5 lg:order-none lg:col-span-4 lg:sticky lg:top-[calc(var(--navbar-height,64px)+1.5rem)] lg:h-fit;
 }
 
 .dashboard__right-rail-stack {
   @apply flex flex-col gap-5;
+}
+
+.dashboard__rail-calendar {
+  @apply w-full;
 }
 
 .dashboard__section {
@@ -500,7 +532,7 @@ function goToQuizzes() {
 .dashboard__topic-header,
 .dashboard__proficiency-stat-row,
 .dashboard__progress-meta {
-  @apply flex items-center justify-between gap-4;
+  @apply flex flex-col gap-4 md:flex-row md:items-center md:justify-between;
 }
 
 .dashboard__section-kicker,
@@ -538,7 +570,7 @@ function goToQuizzes() {
 
 .dashboard__learning-stats,
 .dashboard__proficiency-grid {
-  @apply grid gap-4 sm:grid-cols-3;
+  @apply grid grid-cols-1 gap-4 md:grid-cols-3;
 }
 
 .dashboard__learning-stat,
@@ -555,7 +587,7 @@ function goToQuizzes() {
 }
 
 .dashboard__topics-grid {
-  @apply grid gap-4 sm:grid-cols-2;
+  @apply grid grid-cols-1 gap-4 md:grid-cols-2;
 }
 
 .dashboard__topic-card {
@@ -651,23 +683,11 @@ function goToQuizzes() {
   @apply m-0 rounded-2xl bg-primary-50 px-4 py-4 text-sm leading-6 text-primary;
 }
 
-@media (min-width: 768px) {
-  .dashboard__container {
-    @apply px-10 py-10;
-  }
+.dashboard__learning-stats {
+  @apply md:grid-cols-3;
 }
 
-@media (min-width: 1024px) {
-  .dashboard__container {
-    @apply px-12 py-12;
-  }
-
-  .dashboard__hero {
-    @apply col-span-12;
-  }
-
-  .dashboard__grid {
-    @apply col-span-12;
-  }
+.dashboard__proficiency-grid {
+  @apply md:grid-cols-2 lg:grid-cols-3;
 }
 </style>

@@ -126,7 +126,7 @@ function handleClick(event: MouseEvent) {
   --base-button-border: var(--base-button-accent);
   --base-button-border-hover: var(--base-button-accent);
   --base-button-text: var(--base-button-accent);
-  --base-button-text-hover: var(--color-primary);
+  --base-button-text-hover: var(--color-white);
   @apply border-2;
 }
 </style>

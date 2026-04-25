@@ -121,7 +121,7 @@ function handleHeroCta() {
 }
 
 .landing-page__hero-copy {
-  @apply mx-auto w-full max-w-6xl;
+  @apply mx-auto w-full max-w-7xl;
 }
 
 .landing-page__eyebrow {
@@ -154,7 +154,7 @@ function handleHeroCta() {
 }
 
 .landing-page__section-shell {
-  @apply mx-auto w-full max-w-6xl;
+  @apply mx-auto w-full max-w-7xl;
 }
 
 .landing-page__section-title {

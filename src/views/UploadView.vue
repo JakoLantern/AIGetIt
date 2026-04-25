@@ -52,7 +52,7 @@ function handleUploadClick() {
 }
 
 .upload-page__hero {
-  @apply max-w-3xl;
+  @apply max-w-4xl;
 }
 
 .upload-page__badge {

@@ -95,7 +95,7 @@ async function handleLogin() {
 }
 
 .login-page__card {
-  @apply w-full max-w-xl rounded-3xl border border-primary-30 bg-white p-8 shadow-lg backdrop-blur;
+  @apply w-full max-w-2xl rounded-3xl border border-primary-30 bg-white p-8 shadow-lg backdrop-blur;
 }
 
 .login-page__title {
