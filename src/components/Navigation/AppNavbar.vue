@@ -43,19 +43,26 @@ async function handleLogout() {
 </template>
 
 <style scoped>
-@reference "tailwindcss";
+@reference "./../../assets/main.css";
 
 .navbar {
-  --navbar-border: rgba(255, 255, 255, 0.1);
-  --navbar-surface: rgba(15, 23, 42, 0.9);
-  --navbar-muted: #cbd5e1;
-  @apply rounded-3xl border backdrop-blur;
+  --navbar-border: rgba(255, 255, 255, 0.28);
+  --navbar-surface: rgba(255, 255, 255, 0.1);
+  @apply fixed z-50 pointer-events-auto rounded-lg border shadow-lg;
+  top: var(--navbar-offset, 16px);
+  left: var(--navbar-offset, 16px);
+  right: var(--navbar-offset, 16px);
+  height: var(--navbar-height, 64px);
   border-color: var(--navbar-border);
   background: var(--navbar-surface);
+  backdrop-filter: blur(16px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 30px rgba(0, 0, 0, 0.14);
 }
 
 .navbar__list {
-  @apply flex flex-wrap items-center gap-3 p-4;
+  @apply flex h-full flex-wrap items-center gap-3 px-6;
   list-style: none;
   margin: 0;
 }
@@ -74,13 +81,25 @@ async function handleLogout() {
 }
 
 .navbar__link {
-  @apply text-slate-300;
+  @apply text-primary-main;
+  border: 1px solid transparent;
 }
 
-.navbar__link:hover,
 .navbar__link.router-link-active,
 .navbar__link.router-link-exact-active {
-  @apply bg-white/10 text-white;
+  @apply text-white;
+  border-color: rgba(255, 255, 255, 0.34);
+  background: color-mix(in srgb, var(--color-mossy-main) 74%, rgba(255, 255, 255, 0.16));
+  backdrop-filter: blur(16px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+.navbar__link:hover:not(.router-link-active):not(.router-link-exact-active) {
+  background: color-mix(in srgb, var(--color-mossy-main) 18%, rgba(255, 255, 255, 0.12));
+  border-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(16px) saturate(180%);
 }
 
 .navbar__icon {
@@ -92,10 +111,10 @@ async function handleLogout() {
 }
 
 .navbar__logout {
-  @apply bg-cyan-400 text-slate-950;
+  @apply bg-mossy-main text-white;
 }
 
 .navbar__logout:hover {
-  @apply bg-cyan-300;
+  @apply bg-mossy-400;
 }
 </style>

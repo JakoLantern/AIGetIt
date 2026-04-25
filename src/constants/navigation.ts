@@ -16,6 +16,11 @@ export const navigationItems: NavigationItem[] = [
     icon: 'book',
   },
   {
+    label: 'Upload',
+    path: '/upload',
+    icon: 'upload',
+  },
+  {
     label: 'Quizzes',
     path: '/quizzes',
     icon: 'quiz',

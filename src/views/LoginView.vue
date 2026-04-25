@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import BaseButton from '../components/Common/BaseButton.vue'
 import { useAuthStore } from '../stores/auth'
 
 const router = useRouter()
@@ -74,7 +75,9 @@ async function handleLogin() {
           {{ authStore.error }}
         </p>
 
-        <button class="login-page__button" type="submit" data-testid="login-submit">Sign in</button>
+        <BaseButton variant="mossy" type="submit" data-testid="login-submit">
+          Sign in
+        </BaseButton>
       </form>
     </div>
   </section>
@@ -125,13 +128,5 @@ async function handleLogin() {
 
 .login-page__error {
   @apply m-0 rounded-2xl border border-danger-main bg-danger-30 px-4 py-3 text-sm text-danger-main;
-}
-
-.login-page__button {
-  @apply inline-flex items-center justify-center rounded-full bg-mossy-main px-6 py-3 text-base font-semibold text-white transition;
-}
-
-.login-page__button:hover {
-  @apply bg-mossy-dark;
 }
 </style>

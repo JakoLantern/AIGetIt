@@ -21,7 +21,11 @@ const showNavbar = computed(() => {
 <template>
   <div class="app-shell">
     <AppNavbar v-if="showNavbar" />
-    <RouterView />
+    <main
+      :class="['app-shell__content', { 'app-shell__content--with-navbar': showNavbar }]"
+    >
+      <RouterView />
+    </main>
   </div>
 </template>
 
@@ -29,6 +33,16 @@ const showNavbar = computed(() => {
 @reference "tailwindcss";
 
 .app-shell {
-  @apply min-h-screen bg-white;
+  --navbar-height: 64px;
+  --navbar-offset: 16px;
+  @apply relative min-h-screen bg-white;
+}
+
+.app-shell__content {
+  @apply min-h-screen;
+}
+
+.app-shell__content--with-navbar {
+  padding-top: calc(var(--navbar-height) + var(--navbar-offset));
 }
 </style>
