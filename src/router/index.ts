@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import MainLayout from '../components/layout/MainLayout.vue'
 import DashboardView from '../views/DashboardView.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import LessonsView from '../views/LessonsView.vue'
+import QuizzesView from '../views/QuizzesView.vue'
 
 let authInitializationPromise: Promise<void> | null = null
 
@@ -12,27 +13,37 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: MainLayout,
-      children: [
-        {
-          path: '',
-          name: 'home',
-          component: HomeView,
-        },
-        {
-          path: 'login',
-          name: 'login',
-          component: LoginView,
-        },
-        {
-          path: 'dashboard',
-          name: 'dashboard',
-          component: DashboardView,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-      ],
+      name: 'home',
+      component: HomeView,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/lessons',
+      name: 'lessons',
+      component: LessonsView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/quizzes',
+      name: 'quizzes',
+      component: QuizzesView,
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 })

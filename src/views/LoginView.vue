@@ -36,11 +36,10 @@ async function handleLogin() {
 <template>
   <section class="login-page">
     <div class="login-page__card">
-      <p class="login-page__badge">Secure study access</p>
-      <h1 class="login-page__title">Sign in to AI Get It</h1>
-      <p class="login-page__subtitle">
-        Use your Supabase account to access the private dashboard and continue your study workflow.
-      </p>
+      <div class="login-page__text">
+        <h1 class="login-page__title">Sign in</h1>
+        <p class="login-page__subtitle">Fill in the fields below to access your account.</p>
+      </div>
 
       <form class="login-page__form" @submit.prevent="handleLogin">
         <label class="login-page__field" for="login-email">
@@ -48,6 +47,7 @@ async function handleLogin() {
           <input
             id="login-email"
             v-model="form.email"
+            placeholder="youremailhere@example.com"
             class="login-page__input"
             data-testid="login-email"
             autocomplete="email"
@@ -61,6 +61,7 @@ async function handleLogin() {
           <input
             id="login-password"
             v-model="form.password"
+            placeholder="Enter your password"
             class="login-page__input"
             data-testid="login-password"
             autocomplete="current-password"
@@ -73,44 +74,33 @@ async function handleLogin() {
           {{ authStore.error }}
         </p>
 
-        <button class="login-page__button" type="submit" data-testid="login-submit">
-          Sign in
-        </button>
+        <button class="login-page__button" type="submit" data-testid="login-submit">Sign in</button>
       </form>
     </div>
   </section>
 </template>
 
 <style scoped>
-@reference "tailwindcss";
+@reference "../assets/main.css";
 
 .login-page {
-  --login-surface: rgba(15, 23, 42, 0.92);
-  --login-border: rgba(255, 255, 255, 0.1);
-  --login-muted: #cbd5e1;
-  @apply flex min-h-[calc(100vh-7rem)] items-center justify-center;
+  @apply flex min-h-[calc(100vh-7rem)] items-center justify-center px-4;
+}
+
+.login-page__text {
+  @apply flex flex-col;
 }
 
 .login-page__card {
-  @apply w-full max-w-xl rounded-3xl border p-8 shadow-2xl backdrop-blur;
-  background: var(--login-surface);
-  border-color: var(--login-border);
-}
-
-.login-page__badge {
-  @apply mb-4 inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium leading-none;
-  border-color: rgba(34, 211, 238, 0.3);
-  background: rgba(34, 211, 238, 0.1);
-  color: #a5f3fc;
+  @apply w-full max-w-xl rounded-3xl border border-primary-30 bg-white p-8 shadow-lg backdrop-blur;
 }
 
 .login-page__title {
-  @apply m-0 text-3xl font-semibold tracking-tight text-white;
+  @apply m-0 text-3xl font-semibold tracking-tight text-slate-900;
 }
 
 .login-page__subtitle {
-  @apply mt-4 text-sm leading-6;
-  color: var(--login-muted);
+  @apply mt-4 text-sm text-secondary-main leading-6;
 }
 
 .login-page__form {
@@ -122,27 +112,26 @@ async function handleLogin() {
 }
 
 .login-page__label {
-  @apply text-sm font-medium text-slate-200;
+  @apply text-sm font-medium text-slate-700;
 }
 
 .login-page__input {
-  @apply w-full rounded-2xl border bg-slate-950 px-4 py-3 text-slate-50 outline-none transition;
-  border-color: var(--login-border);
+  @apply w-full rounded-2xl border bg-white px-4 py-3 text-slate-900 outline-none transition;
 }
 
 .login-page__input:focus-visible {
-  @apply border-cyan-400 ring-2 ring-cyan-400/30;
+  @apply border-mossy-main;
 }
 
 .login-page__error {
-  @apply m-0 rounded-2xl border border-rose-400/30 bg-rose-400/10 px-4 py-3 text-sm text-rose-200;
+  @apply m-0 rounded-2xl border border-danger-main bg-danger-30 px-4 py-3 text-sm text-danger-main;
 }
 
 .login-page__button {
-  @apply inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-3 text-base font-semibold text-slate-950 transition;
+  @apply inline-flex items-center justify-center rounded-full bg-mossy-main px-6 py-3 text-base font-semibold text-white transition;
 }
 
 .login-page__button:hover {
-  @apply bg-cyan-300;
+  @apply bg-mossy-dark;
 }
 </style>

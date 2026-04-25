@@ -23,16 +23,16 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data, error: authError } = await supabase.auth.getUser()
 
-      if (authError) {
-        user.value = null
-        error.value = authError.message
-        return
-      }
-
       user.value = data.user ?? null
     } catch (caughtError) {
       user.value = null
-      error.value = caughtError instanceof Error ? caughtError.message : 'Unable to initialize auth'
+      if (caughtError instanceof Error) {
+        const isMissingSession = caughtError.message.toLowerCase().includes('auth session missing')
+
+        if (!isMissingSession) {
+          error.value = caughtError.message
+        }
+      }
     } finally {
       isInitialized.value = true
     }
