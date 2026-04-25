@@ -22,24 +22,24 @@ function resolveRedirect() {
   return '/dashboard'
 }
 
-function handleLogin() {
-  authStore.login({
-    id: 'demo-user',
-    name: 'Demo Learner',
-    email: form.email.trim(),
-  })
+async function handleLogin() {
+  const success = await authStore.login(form.email.trim(), form.password)
 
-  router.replace(resolveRedirect())
+  if (!success) {
+    return
+  }
+
+  await router.replace(resolveRedirect())
 }
 </script>
 
 <template>
   <section class="login-page">
-    <div class="login-page__panel">
+    <div class="login-page__card">
       <p class="login-page__badge">Secure study access</p>
       <h1 class="login-page__title">Sign in to AI Get It</h1>
       <p class="login-page__subtitle">
-        Enter your details to access the private dashboard and continue your study workflow.
+        Use your Supabase account to access the private dashboard and continue your study workflow.
       </p>
 
       <form class="login-page__form" @submit.prevent="handleLogin">
@@ -49,7 +49,7 @@ function handleLogin() {
             id="login-email"
             v-model="form.email"
             class="login-page__input"
-            data-testid="login-email-input"
+            data-testid="login-email"
             autocomplete="email"
             required
             type="email"
@@ -62,14 +62,18 @@ function handleLogin() {
             id="login-password"
             v-model="form.password"
             class="login-page__input"
-            data-testid="login-password-input"
+            data-testid="login-password"
             autocomplete="current-password"
             required
             type="password"
           />
         </label>
 
-        <button class="login-page__button" type="submit" data-testid="login-submit-button">
+        <p v-if="authStore.error" class="login-page__error" role="alert">
+          {{ authStore.error }}
+        </p>
+
+        <button class="login-page__button" type="submit" data-testid="login-submit">
           Sign in
         </button>
       </form>
@@ -81,12 +85,13 @@ function handleLogin() {
 @reference "tailwindcss";
 
 .login-page {
+  --login-surface: rgba(15, 23, 42, 0.92);
+  --login-border: rgba(255, 255, 255, 0.1);
+  --login-muted: #cbd5e1;
   @apply flex min-h-[calc(100vh-7rem)] items-center justify-center;
 }
 
-.login-page__panel {
-  --login-surface: rgba(15, 23, 42, 0.92);
-  --login-border: rgba(255, 255, 255, 0.1);
+.login-page__card {
   @apply w-full max-w-xl rounded-3xl border p-8 shadow-2xl backdrop-blur;
   background: var(--login-surface);
   border-color: var(--login-border);
@@ -104,7 +109,8 @@ function handleLogin() {
 }
 
 .login-page__subtitle {
-  @apply mt-4 text-sm leading-6 text-slate-300;
+  @apply mt-4 text-sm leading-6;
+  color: var(--login-muted);
 }
 
 .login-page__form {
@@ -126,6 +132,10 @@ function handleLogin() {
 
 .login-page__input:focus-visible {
   @apply border-cyan-400 ring-2 ring-cyan-400/30;
+}
+
+.login-page__error {
+  @apply m-0 rounded-2xl border border-rose-400/30 bg-rose-400/10 px-4 py-3 text-sm text-rose-200;
 }
 
 .login-page__button {

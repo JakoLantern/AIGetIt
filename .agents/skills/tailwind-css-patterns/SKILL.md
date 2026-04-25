@@ -1,5 +1,5 @@
 ---
-name: tailwind-css-patterns >
+name: tailwind-css-patterns 
 description: Provides BEM-first styling patterns for Tailwind CSS projects, including semantic component structure, responsive design, layout utilities, spacing, typography, colors, and modern CSS best practices. Use when styling React/Vue/Svelte components, building responsive layouts, implementing design systems, or optimizing CSS workflow. Prefer @apply when it maps cleanly to reusable Tailwind utilities, and use raw CSS for variables or other non-utility cases.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---

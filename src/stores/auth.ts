@@ -1,14 +1,12 @@
 import { computed, shallowRef } from 'vue'
 import { defineStore } from 'pinia'
-
-export interface AuthUser {
-  id: string
-  name: string
-  email: string
-}
+import type { User } from '@supabase/supabase-js'
+import { supabase } from '@/clients/supabase.js'
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = shallowRef<AuthUser | null>(null)
+  const user = shallowRef<User | null>(null)
+  const isInitialized = shallowRef(false)
+  const error = shallowRef<string | null>(null)
 
   const isAuthenticated = computed(() => user.value !== null)
   const authStatus = computed(() => {
@@ -16,21 +14,69 @@ export const useAuthStore = defineStore('auth', () => {
       return 'Signed out'
     }
 
-    return `Signed in as ${user.value.name}`
+    return `Signed in as ${user.value.email ?? 'Authenticated user'}`
   })
 
-  function login(nextUser: AuthUser) {
-    user.value = nextUser
+  async function initialize() {
+    error.value = null
+
+    try {
+      const { data, error: authError } = await supabase.auth.getUser()
+
+      if (authError) {
+        user.value = null
+        error.value = authError.message
+        return
+      }
+
+      user.value = data.user ?? null
+    } catch (caughtError) {
+      user.value = null
+      error.value = caughtError instanceof Error ? caughtError.message : 'Unable to initialize auth'
+    } finally {
+      isInitialized.value = true
+    }
   }
 
-  function logout() {
+  async function login(email: string, password: string) {
+    error.value = null
+
+    const { data, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (authError) {
+      user.value = null
+      error.value = authError.message
+      return false
+    }
+
+    user.value = data.user ?? null
+    return true
+  }
+
+  async function logout() {
+    error.value = null
+
+    const { error: authError } = await supabase.auth.signOut()
+
+    if (authError) {
+      error.value = authError.message
+      return false
+    }
+
     user.value = null
+    return true
   }
 
   return {
     user,
+    isInitialized,
+    error,
     isAuthenticated,
     authStatus,
+    initialize,
     login,
     logout,
   }

@@ -5,6 +5,8 @@ import DashboardView from '../views/DashboardView.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 
+let authInitializationPromise: Promise<void> | null = null
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -35,8 +37,19 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const authStore = useAuthStore()
+
+  if (!authStore.isInitialized) {
+    authInitializationPromise ??= authStore.initialize()
+    await authInitializationPromise
+  }
+
+  if (to.name === 'login' && authStore.user) {
+    return {
+      name: 'dashboard',
+    }
+  }
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.user) {
     return {

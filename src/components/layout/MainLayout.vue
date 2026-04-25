@@ -10,9 +10,12 @@ const { authStatus, isAuthenticated, user } = storeToRefs(authStore)
 
 const statusText = computed(() => authStatus.value)
 
-function handleLogout() {
-  authStore.logout()
-  router.push({ name: 'login' })
+async function handleLogout() {
+  const success = await authStore.logout()
+
+  if (success) {
+    await router.push({ name: 'login' })
+  }
 }
 </script>
 
