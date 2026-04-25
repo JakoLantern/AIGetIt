@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { navigationItems } from '../../constants/navigation'
+import SpriteIcon from '../Common/SpriteIcon.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -22,15 +23,26 @@ async function handleLogout() {
 <template>
   <nav class="navbar" aria-label="Primary navigation">
     <ul class="navbar__list">
-      <li v-for="item in navigationItems" :key="item.path" class="navbar__item">
-        <RouterLink
-          class="navbar__link"
-          :to="item.path"
-          :data-testid="toTestId(item.label)"
-        >
-          <span class="navbar__icon" aria-hidden="true">{{ item.icon }}</span>
-          <span class="navbar__label">{{ item.label }}</span>
-        </RouterLink>
+      <li class="navbar__item navbar__item--brand">
+        <div class="navbar__brand" aria-label="AI Get It">
+          <SpriteIcon name="lightbulb" :size="24" class="navbar__brand-icon text-current" />
+          <span class="navbar__brand-text">AI Get It</span>
+        </div>
+      </li>
+
+      <li class="navbar__item navbar__item--center">
+        <div class="navbar__links">
+          <RouterLink
+            v-for="item in navigationItems"
+            :key="item.path"
+            class="navbar__link"
+            :to="item.path"
+            :data-testid="toTestId(item.label)"
+          >
+            <SpriteIcon :name="item.icon" class="navbar__icon text-current" />
+            <span class="navbar__label">{{ item.label }}</span>
+          </RouterLink>
+        </div>
       </li>
 
       <li class="navbar__item navbar__item--action">
@@ -62,7 +74,7 @@ async function handleLogout() {
 }
 
 .navbar__list {
-  @apply flex h-full flex-wrap items-center gap-3 px-6;
+  @apply flex h-full items-center gap-3 px-6;
   list-style: none;
   margin: 0;
 }
@@ -71,8 +83,32 @@ async function handleLogout() {
   @apply m-0;
 }
 
+.navbar__item--brand {
+  @apply flex-none;
+}
+
+.navbar__item--center {
+  @apply flex min-w-0 flex-1 justify-center;
+}
+
 .navbar__item--action {
-  @apply ml-auto;
+  @apply flex-none;
+}
+
+.navbar__brand {
+  @apply flex items-center gap-2 px-4 py-2;
+}
+
+.navbar__brand-icon {
+  @apply h-6 w-6 flex-none;
+}
+
+.navbar__brand-text {
+  @apply text-sm font-semibold leading-none tracking-wide;
+}
+
+.navbar__links {
+  @apply flex flex-wrap items-center justify-center gap-3;
 }
 
 .navbar__link,
@@ -103,7 +139,7 @@ async function handleLogout() {
 }
 
 .navbar__icon {
-  @apply text-xs uppercase tracking-[0.16em];
+  @apply h-5 w-5 text-current;
 }
 
 .navbar__label {

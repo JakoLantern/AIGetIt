@@ -23,6 +23,6 @@ export const navigationItems: NavigationItem[] = [
   {
     label: 'Quizzes',
     path: '/quizzes',
-    icon: 'quiz',
+    icon: 'paper',
   },
 ]

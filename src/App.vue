@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { RouterView, useRoute } from 'vue-router'
 import AppNavbar from './components/Navigation/AppNavbar.vue'
+import SpriteIcon from './components/Common/SpriteIcon.vue'
 import { navigationItems } from './constants/navigation'
 import { useBreakpoint } from './composables/useBreakpoint'
 import { useAuthStore } from './stores/auth'
@@ -37,7 +38,7 @@ const showNavbar = computed(() => {
         :to="item.path"
         class="app-shell__bottom-nav-link"
       >
-        <span class="app-shell__bottom-nav-icon" aria-hidden="true">{{ item.icon }}</span>
+        <SpriteIcon :name="item.icon" class="app-shell__bottom-nav-icon text-current" />
         <span class="app-shell__bottom-nav-label">{{ item.label }}</span>
       </RouterLink>
     </nav>
@@ -79,7 +80,7 @@ const showNavbar = computed(() => {
 }
 
 .app-shell__bottom-nav-icon {
-  @apply text-xl leading-none;
+  @apply h-5 w-5 text-current;
 }
 
 .app-shell__bottom-nav-label {
