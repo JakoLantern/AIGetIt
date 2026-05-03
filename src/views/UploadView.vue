@@ -49,7 +49,7 @@ import BaseIcon from '../components/Common/BaseIcon.vue'
 @reference "../assets/main.css";
 
 .upload-view {
-  @apply flex min-h-screen items-center justify-center px-4 pb-28 pt-10 sm:px-6 lg:px-8 lg:pb-16;
+  @apply flex h-[100vh] items-center justify-center px-4 pb-28 pt-10 sm:px-6 lg:px-8 lg:pb-16;
   background:
     radial-gradient(circle at top, rgba(186, 192, 149, 0.16), transparent 38%),
     radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.04), transparent 34%),

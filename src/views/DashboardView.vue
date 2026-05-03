@@ -214,8 +214,8 @@ function goToQuizzes() {
               </template>
 
               <p class="dashboard__section-copy">
-                Keep momentum with a short session on {{ currentSubject.toLowerCase() }} and
-                finish the review path before your next quiz.
+                Keep momentum with a short session on {{ currentSubject.toLowerCase() }} and finish
+                the review path before your next quiz.
               </p>
 
               <BaseProgressBar
@@ -249,7 +249,9 @@ function goToQuizzes() {
             <div class="dashboard__section-heading-row">
               <div>
                 <p class="dashboard__section-kicker">Topics</p>
-                <h2 id="topics-heading" class="dashboard__section-title">Your current focus areas</h2>
+                <h2 id="topics-heading" class="dashboard__section-title">
+                  Your current focus areas
+                </h2>
               </div>
 
               <BaseButton
@@ -296,7 +298,9 @@ function goToQuizzes() {
             <div class="dashboard__section-heading-row">
               <div>
                 <p class="dashboard__section-kicker">Flashcards</p>
-                <h2 id="flashcards-heading" class="dashboard__section-title">Swipe through quick recall</h2>
+                <h2 id="flashcards-heading" class="dashboard__section-title">
+                  Swipe through quick recall
+                </h2>
               </div>
 
               <BaseButton
@@ -347,8 +351,8 @@ function goToQuizzes() {
               </template>
 
               <p class="dashboard__section-copy">
-                You are building a solid foundation. Focus the next session on weak spots and keep the
-                repetition tight.
+                You are building a solid foundation. Focus the next session on weak spots and keep
+                the repetition tight.
               </p>
 
               <div class="dashboard__proficiency-grid">
@@ -384,7 +388,10 @@ function goToQuizzes() {
             >
               <template #header>
                 <div class="dashboard__rail-header">
-                  <span class="dashboard__rail-icon dashboard__rail-icon--streak" aria-hidden="true">
+                  <span
+                    class="dashboard__rail-icon dashboard__rail-icon--streak"
+                    aria-hidden="true"
+                  >
                     7
                   </span>
                   <div>
@@ -405,11 +412,7 @@ function goToQuizzes() {
               data-testid="dashboard-calendar"
             />
 
-            <BaseCard
-              rounded="lg"
-              data-testid="dashboard-deadlines"
-              class="dashboard__rail-card"
-            >
+            <BaseCard rounded="lg" data-testid="dashboard-deadlines" class="dashboard__rail-card">
               <template #header>
                 <div class="dashboard__rail-header">
                   <span class="dashboard__rail-icon" aria-hidden="true">!</span>
@@ -421,7 +424,11 @@ function goToQuizzes() {
               </template>
 
               <ul class="dashboard__deadline-list" aria-label="Upcoming deadlines">
-                <li v-for="deadline in deadlines" :key="deadline.title" class="dashboard__deadline-item">
+                <li
+                  v-for="deadline in deadlines"
+                  :key="deadline.title"
+                  class="dashboard__deadline-item"
+                >
                   <div>
                     <p class="dashboard__deadline-date">{{ deadline.date }}</p>
                     <p class="dashboard__deadline-title">{{ deadline.title }}</p>
