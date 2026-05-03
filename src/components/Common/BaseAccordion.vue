@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import BaseButton from './BaseButton.vue'
 
 interface BaseAccordionProps {
   defaultOpen?: boolean
@@ -34,9 +33,8 @@ function toggleAccordion() {
 
 <template>
   <section :class="accordionClasses" :data-testid="dataTestid">
-    <BaseButton
+    <button
       class="base-accordion__trigger"
-      variant="bordered"
       type="button"
       :aria-expanded="isOpen"
       :aria-controls="`${dataTestid}-panel`"
@@ -50,7 +48,7 @@ function toggleAccordion() {
       <span class="base-accordion__icon" aria-hidden="true">
         {{ isOpen ? '−' : '+' }}
       </span>
-    </BaseButton>
+    </button>
 
     <div
       :id="`${dataTestid}-panel`"
@@ -58,8 +56,10 @@ function toggleAccordion() {
       :style="panelStyle"
       :aria-hidden="!isOpen"
     >
-      <div class="base-accordion__body">
-        <slot name="body" />
+      <div class="base-accordion__panel-shell">
+        <div class="base-accordion__body">
+          <slot name="body" />
+        </div>
       </div>
     </div>
   </section>
@@ -73,11 +73,32 @@ function toggleAccordion() {
 }
 
 .base-accordion__trigger {
-  @apply w-full justify-between rounded-3xl px-5 py-4 text-left;
+  --base-accordion-background: var(--color-white);
+  --base-accordion-border: var(--color-primary-50);
+  --base-accordion-text: var(--color-primary);
+  @apply flex w-full items-center justify-between border shadow-md transition duration-200 ease-out;
+  background-color: var(--base-accordion-background);
+  border-color: var(--base-accordion-border);
+  color: var(--base-accordion-text);
+  padding: 1.25rem 1.25rem;
+}
+
+.base-accordion__trigger:hover {
+  @apply cursor-pointer -translate-y-0.5 shadow-lg;
+}
+
+.base-accordion__trigger:focus-visible {
+  @apply outline-none ring-2 ring-mossy-pale/40;
 }
 
 .base-accordion__trigger-copy {
   @apply flex min-w-0 flex-1 flex-col items-start gap-1 text-left;
+}
+
+.base-accordion__panel-shell {
+  @apply rounded-3xl border p-4;
+  border-color: rgba(201, 210, 188, 0.8);
+  background: color-mix(in srgb, var(--color-mossy-30) 72%, var(--color-white));
 }
 
 .base-accordion__panel {
@@ -100,6 +121,6 @@ function toggleAccordion() {
 }
 
 .base-accordion__body {
-  @apply flex flex-col gap-4 pr-1 pt-1;
+  @apply flex flex-col gap-4;
 }
 </style>

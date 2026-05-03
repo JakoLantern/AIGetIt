@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 export type BaseCardRounded = 'none' | 'sm' | 'md' | 'lg' | 'full'
-export type BaseCardVariant = 'mossy' | 'glassy'
+export type BaseCardVariant = 'mossy' | 'secondary' | 'glassy'
 
 interface BaseCardProps {
   variant?: BaseCardVariant
@@ -148,6 +148,16 @@ function handleKeydown(event: KeyboardEvent) {
 
 .base-card--clickable:focus-visible {
   @apply outline-none ring-2 ring-mossy-pale/40;
+}
+
+.base-card--secondary {
+  --base-card-background: var(--color-primary-30);
+  --base-card-border: var(--color-primary-50);
+  --base-card-text: var(--color-primary);
+  background-color: var(--base-card-background);
+  border-color: var(--base-card-border);
+  color: var(--base-card-text);
+  box-shadow: none;
 }
 
 .base-card--glassy {

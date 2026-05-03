@@ -1,14 +1,26 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { navigationItems } from '../../constants/navigation'
 import SpriteIcon from '../Common/SpriteIcon.vue'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
+
+const currentPath = computed(() => route.path)
 
 function toTestId(label: string) {
   return `nav-link-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+}
+
+function isNavItemActive(path: string) {
+  if (path === '/') {
+    return currentPath.value === path
+  }
+
+  return currentPath.value === path || currentPath.value.startsWith(`${path}/`)
 }
 
 async function handleLogout() {
@@ -35,7 +47,13 @@ async function handleLogout() {
           <RouterLink
             v-for="item in navigationItems"
             :key="item.path"
-            class="navbar__link"
+            :class="[
+              'navbar__link',
+              {
+                'router-link-active': isNavItemActive(item.path),
+                'router-link-exact-active': currentPath.value === item.path,
+              },
+            ]"
             :to="item.path"
             :data-testid="toTestId(item.label)"
           >

@@ -3,6 +3,7 @@ import { useAuthStore } from '../stores/auth'
 import DashboardView from '../views/DashboardView.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import SingleLessonView from '../views/SingleLessonView.vue'
 import SubjectsView from '../views/SubjectsView.vue'
 import UploadView from '../views/UploadView.vue'
 import QuizzesView from '../views/QuizzesView.vue'
@@ -34,6 +35,14 @@ const router = createRouter({
       path: '/subjects',
       name: 'subjects',
       component: SubjectsView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/subjects/:lessonId',
+      name: 'single-lesson',
+      component: SingleLessonView,
       meta: {
         requiresAuth: true,
       },

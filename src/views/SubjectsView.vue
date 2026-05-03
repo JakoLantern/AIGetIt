@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import BaseAccordion from '../components/Common/BaseAccordion.vue'
 import BaseButton from '../components/Common/BaseButton.vue'
 import BaseCard from '../components/Common/BaseCard.vue'
+import BaseProgressBar from '../components/Common/BaseProgressBar.vue'
 import BaseSearchBar from '../components/Common/BaseSearchBar.vue'
 import type { SubjectGroup } from '../interfaces/subject'
+
+const router = useRouter()
 
 const subjectGroups: SubjectGroup[] = [
   {
     id: 'biology-foundations',
     name: 'Biology',
     description: 'Core building blocks, transport, and ecosystem review.',
-    lessons: [
+    competencies: [
       {
         id: 'cell-structure-review',
         title: 'Cell Structure Review',
-        description: 'Revisit organelles, membranes, and how cells stay organized.',
+        summary: 'Revisit organelles, membranes, and how cells stay organized.',
         progress: 84,
         status: 'Current lesson',
         duration: '18 min',
@@ -23,7 +27,7 @@ const subjectGroups: SubjectGroup[] = [
       {
         id: 'membrane-transport',
         title: 'Membrane Transport',
-        description: 'Practice diffusion, osmosis, and active transport patterns.',
+        summary: 'Practice diffusion, osmosis, and active transport patterns.',
         progress: 62,
         status: 'In progress',
         duration: '12 min',
@@ -31,7 +35,7 @@ const subjectGroups: SubjectGroup[] = [
       {
         id: 'genetics-fundamentals',
         title: 'Genetics Fundamentals',
-        description: 'Lock in inheritance, genotype, phenotype, and allele rules.',
+        summary: 'Lock in inheritance, genotype, phenotype, and allele rules.',
         progress: 48,
         status: 'Needs review',
         duration: '22 min',
@@ -42,11 +46,11 @@ const subjectGroups: SubjectGroup[] = [
     id: 'chemistry-essentials',
     name: 'Chemistry',
     description: 'Matter, reactions, and the math behind chemical behavior.',
-    lessons: [
+    competencies: [
       {
         id: 'bonding-basics',
         title: 'Bonding Basics',
-        description: 'Review ionic, covalent, and metallic bonding patterns.',
+        summary: 'Review ionic, covalent, and metallic bonding patterns.',
         progress: 76,
         status: 'Current lesson',
         duration: '16 min',
@@ -54,7 +58,7 @@ const subjectGroups: SubjectGroup[] = [
       {
         id: 'reaction-rates',
         title: 'Reaction Rates',
-        description: 'Explore collision theory, catalysts, and rate changes.',
+        summary: 'Explore collision theory, catalysts, and rate changes.',
         progress: 53,
         status: 'In progress',
         duration: '14 min',
@@ -62,7 +66,7 @@ const subjectGroups: SubjectGroup[] = [
       {
         id: 'periodic-trends',
         title: 'Periodic Trends',
-        description: 'Refresh atomic radius, electronegativity, and ionization energy.',
+        summary: 'Refresh atomic radius, electronegativity, and ionization energy.',
         progress: 39,
         status: 'Needs review',
         duration: '20 min',
@@ -73,11 +77,11 @@ const subjectGroups: SubjectGroup[] = [
     id: 'ecology-systems',
     name: 'Ecology',
     description: 'Energy flow, habitats, and the balance of populations.',
-    lessons: [
+    competencies: [
       {
         id: 'ecology-systems-review',
         title: 'Ecology Systems',
-        description: 'Refresh energy flow, ecosystems, and population balance.',
+        summary: 'Refresh energy flow, ecosystems, and population balance.',
         progress: 71,
         status: 'Ready for revision',
         duration: '19 min',
@@ -85,7 +89,7 @@ const subjectGroups: SubjectGroup[] = [
       {
         id: 'food-webs',
         title: 'Food Webs',
-        description: 'Trace producer and consumer relationships in a simple food web.',
+        summary: 'Trace producer and consumer relationships in a simple food web.',
         progress: 58,
         status: 'In progress',
         duration: '11 min',
@@ -93,7 +97,7 @@ const subjectGroups: SubjectGroup[] = [
       {
         id: 'population-dynamics',
         title: 'Population Dynamics',
-        description: 'Look at growth curves, limiting factors, and carrying capacity.',
+        summary: 'Look at growth curves, limiting factors, and carrying capacity.',
         progress: 44,
         status: 'Needs review',
         duration: '15 min',
@@ -125,14 +129,14 @@ const filteredSubjectGroups = computed(() => {
         .toLowerCase()
         .includes(normalizedQuery.value)
 
-      const lessons = groupMatches
-        ? group.lessons
-        : group.lessons.filter((lesson) => {
+      const competencies = groupMatches
+        ? group.competencies
+        : group.competencies.filter((competency) => {
             const searchableText = [
-              lesson.title,
-              lesson.description,
-              lesson.status,
-              lesson.duration,
+              competency.title,
+              competency.summary,
+              competency.status,
+              competency.duration,
             ]
               .join(' ')
               .toLowerCase()
@@ -140,13 +144,13 @@ const filteredSubjectGroups = computed(() => {
             return searchableText.includes(normalizedQuery.value)
           })
 
-      if (!groupMatches && lessons.length === 0) {
+      if (!groupMatches && competencies.length === 0) {
         return null
       }
 
       return {
         ...group,
-        lessons,
+        competencies,
       }
     })
     .filter((group): group is SubjectGroup => group !== null)
@@ -165,6 +169,10 @@ const subjectSummary = computed(() => {
 
 function handleSubjectSearch(query: string) {
   appliedSearchQuery.value = query
+}
+
+function openCompetency(lessonId: string) {
+  router.push({ name: 'single-lesson', params: { lessonId } })
 }
 </script>
 
@@ -224,7 +232,9 @@ function handleSubjectSearch(query: string) {
             <template #header>
               <span class="lessons-page__accordion-kicker">Subject</span>
               <span class="lessons-page__accordion-title">{{ group.name }}</span>
-              <span class="lessons-page__accordion-subtitle">{{ group.lessons.length }} lessons</span>
+              <span class="lessons-page__accordion-subtitle"
+                >{{ group.competencies.length }} competencies</span
+              >
             </template>
 
             <template #body>
@@ -232,26 +242,36 @@ function handleSubjectSearch(query: string) {
                 {{ group.description }}
               </p>
 
-              <div class="lessons-page__lesson-scroller" aria-label="Lessons in subject">
+              <div class="lessons-page__competency-list" aria-label="Competencies in subject">
                 <BaseCard
-                  v-for="lesson in group.lessons"
-                  :key="lesson.id"
+                  v-for="competency in group.competencies"
+                  :key="competency.id"
+                  variant="secondary"
                   rounded="lg"
-                  :clickable="true"
-                  class="lessons-page__lesson-card"
+                  clickable
+                  noPadding
+                  class="lessons-page__competency-row"
+                  @click="openCompetency(competency.id)"
                 >
-                  <template #header>
-                    <div class="lessons-page__lesson-header">
-                      <p class="lessons-page__lesson-tag">{{ lesson.duration }}</p>
-                      <span class="lessons-page__lesson-progress">{{ lesson.progress }}%</span>
+                  <div class="lessons-page__competency-row-layout">
+                    <div class="lessons-page__competency-copy">
+                      <p class="lessons-page__competency-tag">{{ competency.duration }}</p>
+                      <div class="lessons-page__competency-title-row">
+                        <h4 class="lessons-page__competency-title">{{ competency.title }}</h4>
+                        <span class="lessons-page__lesson-status">{{ competency.status }}</span>
+                      </div>
+                      <p class="lessons-page__competency-summary">{{ competency.summary }}</p>
                     </div>
-                  </template>
 
-                  <h4 class="lessons-page__lesson-title">{{ lesson.title }}</h4>
-                  <p class="lessons-page__lesson-copy">{{ lesson.description }}</p>
-
-                  <div class="lessons-page__lesson-footer">
-                    <span class="lessons-page__lesson-status">{{ lesson.status }}</span>
+                    <div class="lessons-page__competency-analytics">
+                      <BaseProgressBar
+                        :value="competency.progress"
+                        size="lg"
+                        :showPercentage="true"
+                        :label="'Your progress'"
+                        customColor="var(--color-mossy-100)"
+                      />
+                    </div>
                   </div>
                 </BaseCard>
               </div>
@@ -361,31 +381,48 @@ function handleSubjectSearch(query: string) {
   @apply m-0 text-sm leading-6 text-primary-200;
 }
 
-.lessons-page__lesson-scroller {
-  @apply flex gap-4 overflow-x-auto pb-2;
+.lessons-page__competency-list {
+  @apply flex flex-col gap-4;
 }
 
-.lessons-page__lesson-card {
-  @apply min-w-64 shrink-0 flex flex-col gap-4;
+.lessons-page__competency-row {
+  @apply w-full;
 }
 
-.lessons-page__lesson-header,
-.lessons-page__lesson-footer {
-  @apply flex items-center justify-between gap-3;
+.lessons-page__competency-row-layout {
+  @apply flex flex-col gap-4 p-4 md:flex-row md:items-center md:justify-between;
 }
 
-.lessons-page__lesson-progress,
+.lessons-page__competency-copy {
+  @apply flex min-w-0 flex-1 flex-col gap-2;
+}
+
+.lessons-page__competency-title-row {
+  @apply flex flex-wrap items-center gap-3;
+}
+
+.lessons-page__competency-tag {
+  @apply m-0 text-xs font-semibold uppercase tracking-[0.2em] text-mossy-pale;
+}
+
+.lessons-page__competency-title {
+  @apply m-0 text-lg font-semibold text-primary;
+}
+
+.lessons-page__competency-summary {
+  @apply m-0 text-sm leading-6 text-primary-200;
+}
+
+.lessons-page__competency-analytics {
+  @apply w-full md:max-w-sm md:flex-none;
+}
+
 .lessons-page__lesson-status {
-  @apply border text-mossy-main;
+  @apply inline-flex w-fit flex-none border text-mossy-main;
   border-color: rgba(34, 197, 94, 0.25);
   background: rgba(34, 197, 94, 0.08);
 }
 
-.lessons-page__lesson-title {
-  @apply m-0 text-lg font-semibold text-primary;
-}
-
-.lessons-page__lesson-copy,
 .lessons-page__empty-copy {
   @apply m-0 text-sm leading-6 text-primary-200;
 }
