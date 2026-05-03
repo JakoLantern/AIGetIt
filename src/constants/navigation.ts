@@ -11,8 +11,8 @@ export const navigationItems: NavigationItem[] = [
     icon: 'home',
   },
   {
-    label: 'My Lessons',
-    path: '/lessons',
+    label: 'My Subjects',
+    path: '/subjects',
     icon: 'book',
   },
   {

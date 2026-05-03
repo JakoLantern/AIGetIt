@@ -161,8 +161,8 @@ const proficiencyStats: ProficiencyStat[] = [
   },
 ]
 
-function goToLessons() {
-  router.push('/lessons')
+function goToSubjects() {
+  router.push('/subjects')
 }
 
 function goToUpload() {
@@ -206,7 +206,7 @@ function goToQuizzes() {
                     variant="bordered"
                     type="button"
                     data-testid="dashboard-continue-button"
-                    @click="goToLessons"
+                    @click="goToSubjects"
                   >
                     Continue
                   </BaseButton>
@@ -467,7 +467,7 @@ function goToQuizzes() {
                   variant="glassy"
                   type="button"
                   data-testid="dashboard-coach-button"
-                  @click="goToLessons"
+                  @click="goToSubjects"
                 >
                   Open coach
                 </BaseButton>

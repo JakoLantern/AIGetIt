@@ -7,6 +7,7 @@ export type BaseCardVariant = 'mossy' | 'glassy'
 interface BaseCardProps {
   variant?: BaseCardVariant
   rounded?: BaseCardRounded
+  clickable?: boolean
   customBorderColor?: string
   customBgColor?: string
   customHoverBgColor?: string
@@ -18,9 +19,14 @@ interface BaseCardProps {
 const props = withDefaults(defineProps<BaseCardProps>(), {
   variant: 'mossy',
   rounded: 'md',
+  clickable: false,
   noPadding: false,
   dataTestid: 'base-card',
 })
+
+const emit = defineEmits<{
+  click: [event: MouseEvent]
+}>()
 
 const roundedClassMap: Record<BaseCardRounded, string> = {
   none: 'rounded-none',
@@ -36,6 +42,7 @@ const cardClasses = computed(() => [
   `base-card--${props.rounded}`,
   roundedClassMap[props.rounded],
   {
+    'base-card--clickable': props.clickable,
     'base-card--no-padding': props.noPadding,
     'p-4': !props.noPadding,
   },
@@ -62,17 +69,47 @@ const cardStyle = computed(() => {
   }
 
   if (props.variant === 'glassy') {
-    style['--base-card-background-hover'] = style['--base-card-background'] ?? 'var(--base-card-background)'
+    style['--base-card-background-hover'] =
+      style['--base-card-background'] ?? 'var(--base-card-background)'
     style['--base-card-border-hover'] = style['--base-card-border'] ?? 'var(--base-card-border)'
     style['--base-card-text-hover'] = style['--base-card-text'] ?? 'var(--base-card-text)'
   }
 
   return style
 })
+
+function handleClick(event: MouseEvent) {
+  if (!props.clickable) {
+    return
+  }
+
+  emit('click', event)
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  if (!props.clickable) {
+    return
+  }
+
+  if (event.key !== 'Enter' && event.key !== ' ') {
+    return
+  }
+
+  event.preventDefault()
+  emit('click', new MouseEvent('click', { bubbles: true, cancelable: true }))
+}
 </script>
 
 <template>
-  <article :class="cardClasses" :style="cardStyle" :data-testid="dataTestid">
+  <article
+    :class="cardClasses"
+    :style="cardStyle"
+    :data-testid="dataTestid"
+    :role="clickable ? 'button' : undefined"
+    :tabindex="clickable ? 0 : undefined"
+    @click="handleClick"
+    @keydown="handleKeydown"
+  >
     <header v-if="$slots.header" class="base-card__header">
       <slot name="header" />
     </header>
@@ -99,6 +136,18 @@ const cardStyle = computed(() => {
   border-color: var(--base-card-border);
   color: var(--base-card-text);
   transition-property: background-color, border-color, color, box-shadow, transform;
+}
+
+.base-card--clickable {
+  @apply transition duration-200 ease-out;
+}
+
+.base-card--clickable:hover {
+  @apply cursor-pointer -translate-y-0.5 shadow-lg;
+}
+
+.base-card--clickable:focus-visible {
+  @apply outline-none ring-2 ring-mossy-pale/40;
 }
 
 .base-card--glassy {
